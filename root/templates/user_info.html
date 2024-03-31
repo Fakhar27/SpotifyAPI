@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container d-flex flex-column align-items-center justify-content-center vh-100">
+    <div>
+        <h2 class="text-success">Thank You!</h2>
+        <h5 class="text-primary">Your information has been submitted successfully.</h5>
+        <p class="text-muted">We appreciate your participation.</p>
+    </div>
+    <br>
+    <h1 class="text-danger">User Information</h1>
+    <br>
+    <div class="info">
+        <p><strong>Display Name:</strong> {{ display_name }}</p>
+        <p><strong>Email:</strong> {{ email }}</p>
+    </div>
+    <br>
+    <h2>Followed Artists</h2>
+    <ul class="artist-list">
+        {% for artist in followed_artists %}
+        <li>{{ artist.name }}</li>
+        {% endfor %}
+    </ul>
+    <br>
+    <h2>Playlists</h2>
+    <ul class="playlist-list">
+        {% for playlist in playlists %}
+        <li>{{ playlist.name }}</li>
+        {% endfor %}
+    </ul>
+    <br>
+    <div class="explicit-content">
+        <h2>Explicit Content</h2>
+        <p><strong>Filter Enabled:</strong> {% if explicit_content.filter_enabled %} Yes {% else %} No {% endif %}</p>
+        <p><strong>Filter Locked:</strong> {% if explicit_content.filter_locked %} Yes {% else %} No {% endif %}</p>
+    </div>
+    <br>
+    <h2>External URLs</h2>
+    <p><strong>Spotify URL:</strong> <a href="{{ external_urls.spotify }}">{{ external_urls.spotify }}</a></p>
+    <h2>Followers</h2>
+    <p><strong>Total Followers:</strong> {{ followers_info.total }}</p>
+    <br>
+    <br>
+</div>
+
+{% endblock content %}
