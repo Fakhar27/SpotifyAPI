@@ -6,9 +6,9 @@ import os
 from django.contrib.auth.decorators import login_required
 
 
-CLIENT_ID = '5aca6f176f0647518a5d3f9a250f9974'
-CLIENT_SECRET = 'ba8a8bb1e6b04bf6b6cac7110f249faa'
-REDIRECT_URI = 'http://127.0.0.1:8000/spotify/callback/'
+CLIENT_ID = ''
+CLIENT_SECRET = ''
+REDIRECT_URI = ''
 
 
 def spotify_login(request):
