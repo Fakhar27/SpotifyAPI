@@ -5,12 +5,12 @@ import csv
 import os
 from django.contrib.auth.decorators import login_required
 
-
+#SPOTIFY API CREDENTIALS
 CLIENT_ID = ''
 CLIENT_SECRET = ''
 REDIRECT_URI = ''
 
-
+#USER FIRST REDIRECTED TO ENTER INFORMATION AND SAVED IN FormDataModel AND THEN THROUGH API CREDENTIALS LOGGED IN SPOTIFY ACCOUNT
 def spotify_login(request):
     if request.method == 'POST':
         first_name = request.POST.get('firstName')
@@ -36,7 +36,7 @@ def spotify_login(request):
     return render(request, 'index.html')
 
 
-
+#THIS FUNCTION WILL BE THE NEXT CONTROLFLOW IF USER IS LOGGED IN SPOTIFYAPI SUCCESSFULLY AND HERE SESSIONTOKENS AND OTHER IMPORTANT STUFF WILL BE GENERATED
 def spotify_callback(request):
     code = request.GET.get('code')
     if not code:
@@ -61,6 +61,9 @@ def spotify_callback(request):
     
     return redirect('user_info')
 
+#NEXT CONTROLFLOW IS IN THIS FUNCTION WHERE REQUIRED INFORMATION OF THAT PARTICULAR USER IS RETRIEVED AND FORWARDED TO FRONTEND, DEPENDS ON ACCESSTOKEN OTHERWISE WILL NOT RUN 
+#THIS FETCHING IS DONE DIRECTLY FROM SPOTIFYAPI NO THIRD PARTY LIBRARY IS USED LIKE SPOTIPY
+#INFO IS STORED IN SPOTIFYUSERMODEL AND CSV FILE
 def user_info(request):
     if not request.session.get('access_token'):
         return redirect('index') 
@@ -150,27 +153,18 @@ def user_info(request):
                 ', '.join([artist['name'] for artist in followed_artists]),
             ])
             
-        # csv_data = []
-        # for playlist in playlists:
-        #     csv_data.append([playlist['id'], playlist['name']])
-
-        # csv_folder = 'media/csv_files'
-        # os.makedirs(csv_folder, exist_ok=True)
-        # csv_path = os.path.join(csv_folder, 'spotify_user_playlists.csv')
-
-        # with open(csv_path, 'w', newline='') as csvfile:
-        #     csv_writer = csv.writer(csvfile)
-        #     csv_writer.writerow(['Playlist ID', 'Playlist Name'])
-        #     csv_writer.writerows(csv_data)
-
         return render(request, 'user_info.html', context)
 
+    #EXCEPTION HANDLING IN TERMS OF REQUEST TIMEOUT
     except requests.exceptions.RequestException as e:
         return render(request, 'error.html', {'error_message': f"Error fetching user information: {e}"}) 
     
 @login_required(login_url='')
 def error(request):
     return render(request, 'error.html')
+
+
+#CODE PROTOTYPE OF SPOTIPY LIBRARY
 
 
 # from django.http import HttpResponse
